@@ -35,5 +35,7 @@ export class AppModule {
 }
 
 export var config = {
-    user_url: 'http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/guest/drinks?api_key=140bd66234dbe096f212e9753b4ff9c5'
+  user_url_base: 'http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/',
+  user_url_ending:'/drinks?api_key=140bd66234dbe096f212e9753b4ff9c5',
+  user_name: 'guest'
 };
