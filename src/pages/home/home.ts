@@ -9,13 +9,13 @@ import {config} from "../../app/app.module";
 })
 export class HomePage {
 
-  @ViewChild('doughnutCanvas') doughnutCanvas;
+  @ViewChild('beerHistory') beerHistory;
   @ViewChild('barCanvas') barCanvas;
 
-  doughnutChart: any;
+
+  beerHistoryChart: any;
   barChart: any;
-  public userData: any;
-  lol = false;
+  userData: any;
 
 
   constructor(public http: HttpProvider) {
@@ -42,12 +42,14 @@ export class HomePage {
   }
 
   fillData() {
+    var date = this.userData[0].time;
+    var beerHistoryData = {};
     var nameOne = '', nameTwo = '', drinkOneCount = 0, drinkTwoCount = 0;
     for (let i = 0; i < this.userData.length; i++) {
       if (nameOne === '') {
         nameOne = this.userData[i].keg.beverage.name;
       }
-      if(nameOne !== this.userData[i].keg.beverage.name){
+      if (nameOne !== this.userData[i].keg.beverage.name) {
         nameTwo = this.userData[i].keg.beverage.name;
       }
 
@@ -56,6 +58,11 @@ export class HomePage {
       } else {
         drinkTwoCount++
       }
+      if (this.userData[i].time < date){
+        date = this.userData[i].time;
+
+      }
+      beerHistoryData[date] += this.userData[i].volume_ml;
     }
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
@@ -92,5 +99,39 @@ export class HomePage {
       }
 
     });
+    this.beerHistoryChart = new Chart(this.beerHistory.nativeElement, {
+      type: 'line',
+        data: {
+        labels: [nameOne, nameTwo],
+          datasets: [{
+          data: beerHistoryData,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              mirror: true
+            },
+            stacked: true
+          }],
+            xAxes: [{
+            stacked: true
+          }]
+        }
+      }
+
+    });
+
   }
 }
