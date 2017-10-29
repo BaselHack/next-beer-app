@@ -7,22 +7,53 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
+
+  <ion-card *ngIf="!informationAccepted">
     <ion-card-header>
-      Which beer
+      Information
     </ion-card-header>
     <ion-card-content>
-      <canvas width="100%" #barCanvas></canvas>
+      <p>Your consumption is measured by the last recorded day. All other values are calculated by all data recordsets. They do not depend on the date.</p>
+      <button ion-button (click)="acceptInformation()">OK</button>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      Beer History
-    </ion-card-header>
-    <ion-card-content>
-      <canvas width="100%"  style="height: 200px;" #beerHistory></canvas>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="isEmpty">
+    <ion-card>
+      <ion-card-content>
+        <p>Sorry, no data available for this user :(</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
+  <div *ngIf="!isEmpty">
+
+      <ion-card>
+        <ion-card-content>
+          <h3>Your alcohol consumption</h3>
+          <p *ngIf="!pageLoaded">Loading data...</p>
+          <h1 *ngIf="pageLoaded">{{alcohoConsumption.toString()}} ml</h1>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          Your favourite beer
+        </ion-card-header>
+        <ion-card-content>
+          <p *ngIf="!pageLoaded">Loading data...</p>
+          <canvas width="100%" #barCanvas></canvas>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          Beer History
+        </ion-card-header>
+        <ion-card-content>
+          <p *ngIf="!pageLoaded">Loading data...</p>
+          <canvas width="100%" style="height: 200px;" #beerHistory></canvas>
+        </ion-card-content>
+      </ion-card>
+
+  </div>
 </ion-content>

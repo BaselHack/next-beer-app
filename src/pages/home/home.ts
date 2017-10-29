@@ -16,10 +16,15 @@ export class HomePage {
   beerHistoryChart: any;
   barChart: any;
   userData: any;
-
+  isEmpty:boolean = false;
+  pageLoaded:boolean = false;
+  informationAccepted:boolean = false;
+  alcohoConsumption:any = 0;
 
   constructor(public http: HttpProvider) {
+    this.pageLoaded = false;
     this.username = config.user_name;
+    this.informationAccepted = config.information_accepted;
     this.getUserData()
       .then((response) => {
         this.fillData()
@@ -30,7 +35,7 @@ export class HomePage {
   private getUserData() {
     return new Promise((resolve) => {
       // TODO remove for prod
-      var url = 'http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-drinks.http';
+      var url = 'http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-user-drinks.http?_usr=' + this.username;
       // var url = './assets/data/data.json';
       this.http.get(url)
         .then((response) => {
@@ -43,12 +48,20 @@ export class HomePage {
   }
 
   fillData() {
+    if (this.userData.length === 0){
+      this.isEmpty = true;
+      return;
+    }
     var date = this.formatDate(this.userData[0].time);
     var fdate = date;
     var beerHistoryData = {}, labels = [];
     var nameOne = '', nameTwo = '', drinkOneCount = 0, drinkTwoCount = 0;
     for (let i = 0; i < this.userData.length; i++) {
       let d = this.formatDate(this.userData[i].time);
+      if (d === date){
+        this.alcohoConsumption += this.userData[i].volume_ml;
+      }
+
       if (d < date) {
         date = d;
         labels.push(date);
@@ -101,11 +114,17 @@ export class HomePage {
         }]
       },
       options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
         scales: {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              mirror: true
+              mirror: true,
             },
             stacked: true
           }],
@@ -114,19 +133,24 @@ export class HomePage {
           }]
         }
       }
-
     });
+
     var beerHistoryDataFormattedOne = Object.keys(beerHistoryData[nameOne]).map(x => beerHistoryData[nameOne][x]).reverse();
     var beerHistoryDataFormattedTwo = Object.keys(beerHistoryData[nameTwo]).map(x => beerHistoryData[nameTwo][x]).reverse();
+
     labels.reverse();
+
     var maxOne = Math.max.apply(null, beerHistoryDataFormattedOne);
     var maxTwo = Math.max.apply(null, beerHistoryDataFormattedTwo);
+
     var max = 0;
+
     if (maxOne > maxTwo) {
       max = maxOne;
     } else {
       max = maxTwo;
     }
+
     this.beerHistoryChart = new Chart(this.beerHistory.nativeElement, {
       type: 'line',
       data: {
@@ -147,6 +171,9 @@ export class HomePage {
         ]
       },
       options: {
+        tooltips: {
+          enabled: false
+        },
         scales: {
           yAxes: [{
             ticks: {
@@ -161,7 +188,7 @@ export class HomePage {
         }
       }
     });
-
+    this.pageLoaded = true;
   }
 
   formatDate(date) {
@@ -174,5 +201,10 @@ export class HomePage {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('/');
+  }
+
+  acceptInformation() {
+    this.informationAccepted = true;
+    config.information_accepted = true;
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "NextBeer",
-  "app_id": "",
+  "app_id": "06108467",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

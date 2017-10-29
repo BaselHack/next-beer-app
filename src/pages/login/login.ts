@@ -26,10 +26,11 @@ export class LoginPage {
 
   getUser() {
     this.error = false;
-    let url = 'http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-user-data.http';
+    let url = 'http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-user-data.http?_usr=' + this.username;
     this.http.get(url)
       .then((response) => {
-          if (response.meta.result === 'error') {
+          if (response['meta'].result === 'error') {
+          // if (true) {
             this.error = true;
           } else {
             config.user_name = this.username;
