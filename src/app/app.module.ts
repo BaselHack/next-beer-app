@@ -27,6 +27,7 @@ import {LoginPage} from "../pages/login/login";
     LoginPage,
     HomePage
   ],
+
   providers: [
     StatusBar,
     SplashScreen,
