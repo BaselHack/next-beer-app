@@ -1,8 +1,378 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body>
-    <h1>Hello World</h1>
-  </body>
+
+<head>
+      <meta charset='UTF-8'>
+      <title>NBA - Liquid Analytics</title>
+      <!-- analytics -->
+      <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+
+      <!-- load styles -->
+      <link rel='stylesheet' type='text/css' href='reset.css'>
+      <link rel='stylesheet' type='text/css' href='style.css'>
+
+      <!-- load scripts -->
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js'></script>
+      <script src='script.js'></script>
+
+</head>
+
+<body>
+      <div class='header'>
+         <div class="logo">
+            Next Beer Analytics
+         </div>
+
+         <div class="brief">
+            <span></span>
+            <span></span>
+         </div>
+      </div>
+
+      <div class='container-fixed-width'>
+            <div class='container-3-row'>
+                  <canvas id='chart_bar_use' width='400' height='400'></canvas>
+            </div>
+
+            <div class='container-3-row'>
+                  <canvas id='chart_bar_quant' width='400' height='400'></canvas>
+            </div>
+
+            <div class='container-3-row'>
+                  <canvas id='chart_pie_use' width='400' height='400'></canvas>
+            </div>
+
+            <div class='container-3-row'>
+                  <canvas id='chart_pie_quant' width='400' height='400'></canvas>
+            </div>
+
+            <div class='container-12-row'>
+                  <canvas id='chart_line' width='400' height='150'></canvas>
+            </div>
+
+            <div class='container-12-row'>
+                  <canvas id='chart_bubble' width='400' height='150'></canvas>
+            </div>
+      </div>
+</body>
+
+
+
+<script>
+      // fetch json data from api
+      // jQuery CORS example
+      var test = [];
+      //test.x.push('test')
+
+      var source_data;
+
+      $.get('http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-drinks.http', function(data) {
+            source_data = data;
+            process_beverage_uses();
+            process_beverage_quant();
+            process_beverage_time();
+      })
+
+      // get use of products
+      function process_beverage_uses() {
+            var userData = window.source_data.objects;
+            var name = '',
+                  nameTwo = '',
+                  counter = 0;
+
+            for (let i = 0; i < userData.length; i++) {
+                  if (name === '') {
+                        name = userData[i].keg.beverage.name;
+                  }
+                  if (name !== userData[i].keg.beverage.name) {
+                        nameTwo = userData[i].keg.beverage.name;
+                  } else {
+                        counter++;
+                  }
+            }
+            var beerOneCount = counter;
+            var beerTwoCount = userData.length - counter;
+            // rendering the chart bar for comparing uses between 2 products
+            render_chart_bar_use(beerOneCount, beerTwoCount);
+            render_chart_pie_use_comparison(beerOneCount, beerTwoCount);
+      }
+
+      // get quant. use of products
+      function process_beverage_quant() {
+            var userData = window.source_data.objects;
+            var name = '',
+                  nameTwo = '',
+                  counter = 0,
+                  bewOne = 0,
+                  bewTwo = 0;
+
+            for (let i = 0; i < userData.length; i++) {
+                  if (name === '') {
+                        name = userData[i].keg.beverage.name;
+                  }
+                  if (name !== userData[i].keg.beverage.name) {
+                        nameTwo = userData[i].keg.beverage.name;
+                        // onsole.log(userData[i].volume_ml);
+                        bewOne = bewOne + userData[i].volume_ml;
+                  } else {
+                        counter++;
+                        // console.log("Log2: " + userData[i].volume_ml);
+                        bewTwo = bewTwo + userData[i].volume_ml;
+                  }
+            }
+            var beerOneCount = counter;
+            var beerTwoCount = userData.length - counter;
+
+            // console.log(bewOne);
+            // console.log(bewTwo);
+
+            render_chart_bar_quant(bewOne, bewTwo);
+            render_chart_pie_quant_comparison(bewOne, bewTwo);
+
+            // rendering the chart bar for comparing uses between 2 products
+            // render_chart_bar(beerOneCount, beerTwoCount);
+      }
+
+      // get time & quant of product
+      function process_beverage_time() {
+            var userData = window.source_data.objects;
+            var name = '',
+                  nameTwo = '',
+                  counter = 0,
+                  bewOne = [],
+                  bewTwo = [];
+
+            for (let i = 0; i < userData.length; i++) {
+                  if (name === '') {
+                        name = userData[i].keg.beverage.name;
+                  }
+                  if (name !== userData[i].keg.beverage.name) {
+                        nameTwo = userData[i].keg.beverage.name;
+                        bewOne.push({
+                            x: userData[i].keg.start_time,
+                            y: userData[i].volume_ml
+                        });
+
+                  } else {
+                        counter++;
+                        bewTwo.push({
+                            x: userData[i].keg.start_time,
+                            y: userData[i].volume_ml
+                        });
+
+                  }
+            }
+            var beerOneCount = counter;
+            var beerTwoCount = userData.length - counter;
+
+            console.log(bewOne);
+            console.log(bewTwo);
+
+            render_chart_line_time_comparison(bewOne, bewTwo);
+            render_chart_bubble_time_comparison(bewOne, bewTwo);
+
+            // render_chart_bar_quant(bewOne, bewTwo);
+            // render_chart_pie_quant_comparison(bewOne, bewTwo);
+
+            // rendering the chart bar for comparing uses between 2 products
+            // render_chart_bar(beerOneCount, beerTwoCount);
+      }
+
+      // write out string format
+      function formatDate(date) {
+            var d = new Date(date);
+            month = '' + (d.getMonth() + 1);
+            day = '' + d.getDay();
+            year = '' + d.getYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('/');
+      }
+
+      // ----------------------------------------------------------------------------------------------------
+
+      function render_chart_bar_use(a, b) {
+            new Chart(document.getElementById('chart_bar_use'), {
+                  type: 'bar',
+                  data: {
+                        labels: ['Kronenbourg', 'Feldschlösschen'],
+                        datasets: [{
+                              label: 'Kronenbourg',
+                              data: [a],
+                              backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+                              borderColor: ['rgba(255, 99, 132, 1)'],
+                              borderWidth: 1
+                        }, {
+                              label: 'Feldschlösschen',
+                              data: [b],
+                              backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                              borderColor: ['rgba(54, 162, 235, 1)'],
+                              borderWidth: 1
+                        }]
+                  },
+                  options: {
+                        scales: {
+                              yAxes: [{
+                                    ticks: {
+                                          beginAtZero: true
+                                    }
+                              }]
+                        }
+                  }
+            });
+      }
+
+      function render_chart_bar_quant(a, b) {
+            new Chart(document.getElementById('chart_bar_quant'), {
+                  type: 'bar',
+                  data: {
+                        labels: ['Kronenbourg', 'Feldschlösschen'],
+                        datasets: [{
+                              label: 'Kronenbourg',
+                              data: [a],
+                              backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+                              borderColor: ['rgba(255, 99, 132, 1)'],
+                              borderWidth: 1
+                        }, {
+                              label: 'Feldschlösschen',
+                              data: [b],
+                              backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                              borderColor: ['rgba(54, 162, 235, 1)'],
+                              borderWidth: 1
+                        }]
+                  },
+                  options: {
+                        scales: {
+                              yAxes: [{
+                                    ticks: {
+                                          beginAtZero: true
+                                    }
+                              }]
+                        }
+                  }
+            });
+      }
+
+      function render_chart_pie_use_comparison(a, b) {
+            new Chart(document.getElementById('chart_pie_use'), {
+                  type: 'doughnut',
+                  data: {
+                        labels: ['Kronenbourg', 'Feldschlösschen'],
+                        datasets: [{
+                              label: 'My First Dataset',
+                              data: [a, b],
+                              backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)'
+                              ],
+                              borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)'
+                              ],
+                              borderWidth: 1
+                        }],
+                        options: {
+                              cutoutPercentage: 5,
+                              scales: {
+                                    yAxes: [{
+                                          tick: {
+                                                beginAtZero: true
+                                          }
+                                    }]
+                              }
+                        }
+                  }
+            });
+      }
+
+      function render_chart_pie_quant_comparison(a, b) {
+            new Chart(document.getElementById('chart_pie_quant'), {
+                  type: 'doughnut',
+                  data: {
+                        labels: ['Kronenbourg', 'Feldschlösschen'],
+                        datasets: [{
+                              label: 'My First Dataset',
+                              data: [a, b],
+                              backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)'
+                              ],
+                              borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)'
+                              ],
+                              borderWidth: 1
+                        }],
+                        options: {
+                              cutoutPercentage: 5,
+                              scales: {
+                                    yAxes: [{
+                                          tick: {
+                                                beginAtZero: true
+                                          }
+                                    }]
+                              }
+                        }
+                  }
+            });
+      }
+
+      // ----------------------------------------------------------------------------------------------------
+
+      function render_chart_line_time_comparison(a, b) {
+            new Chart(document.getElementById('chart_line'), {
+                  type: 'line',
+                  data: {
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        datasets: [{
+                              label: 'Kronenbourg',
+                              data: a,
+                              fill: false,
+                              borderColor: 'rgba(255, 99, 132, 1)',
+                        }, {
+                              label: 'Feldschlösschen',
+                              data: b,
+                              fill: false,
+                              borderColor: 'rgba(54, 162, 235, 1)'
+                        }]
+                  },
+                  options: {
+                        scales: {
+                              yAxes: [{
+                                    tick: {
+                                          beginAtZero: true
+                                    }
+                              }]
+                        }
+                  }
+            });
+      }
+
+
+      // ----------------------------------------------------------------------------------------------------
+
+      function render_chart_bubble_time_comparison(a, b) {
+         new Chart(document.getElementById('chart_bubble'), {
+               type: 'bubble',
+               data: {
+                     datasets: [{
+                           label: 'Kronenbourg',
+                           data: a,
+                           backgroundColor: 'rgb(255, 99, 132)'
+                     }]
+               },
+               options: {
+                     scales: {
+                           xAxes: [{
+                                 type: 'time'
+                           }]
+                     }
+               }
+         });
+      };
+</script>
+
+
+
 </html>
