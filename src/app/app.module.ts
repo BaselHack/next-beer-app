@@ -25,7 +25,6 @@ import {LoginPage} from "../pages/login/login";
   entryComponents: [
     MyApp,
     LoginPage,
-
     HomePage
   ],
 
