@@ -13,8 +13,8 @@ import {LoginPage} from "../pages/login/login";
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    LoginPage
+    LoginPage,
+    HomePage
   ],
   imports: [
     BrowserModule,
@@ -24,8 +24,8 @@ import {LoginPage} from "../pages/login/login";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    LoginPage
+    LoginPage,
+    HomePage
   ],
   providers: [
     StatusBar,
@@ -40,5 +40,6 @@ export var config = {
   user_url_base: 'http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/',
   user_url_ending: '/drinks',
   user_name: 'guest',
-  api_key: '140bd66234dbe096f212e9753b4ff9c5'
+  api_key: '140bd66234dbe096f212e9753b4ff9c5',
+  information_accepted: false,
 };

@@ -11,10 +11,10 @@
     <ion-item>
       <ion-label floating>Username to look up</ion-label>
       <ion-input type="text" value="guest" [(ngModel)]="username"></ion-input>
-      <div *ngIf="error">
-        <p color="danger">User does not exist. Please try an other user</p>
-      </div>
     </ion-item>
   </ion-list>
+  <div *ngIf="error">
+    <p style="color: red">User does not exist. Please try an other user</p>
+  </div>
   <button ion-button block (click)="getUser()">Let's go</button>
 </ion-content>
