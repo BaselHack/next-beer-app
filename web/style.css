@@ -59,3 +59,8 @@ body {
    box-shadow: 0 2px 15px rgba(0,0,0,0.15);
 
 }
+
+/* Footer */
+#footer { background:#eee;}
+#footer-inner { margin:auto; text-align:center; padding:12px; width:970px;}
+#footer a {color:blue;text-decoration:none;}
