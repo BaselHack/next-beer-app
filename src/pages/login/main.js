@@ -1,10 +1,9 @@
-function main(args) {
+function main({_usr}) {
   return new Promise(
     (resolve, reject) => {
     //send message to slack channel
     var http = require('http');
-    console.log(args);
-  http.get('http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/' + args._usr + '?api_key=140bd66234dbe096f212e9753b4ff9c5', function (response) {
+  http.get(`http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/${_usr}?api_key=140bd66234dbe096f212e9753b4ff9c5`, function (response) {
     var body = '';
     response.on('data', function (d) {
       body += d;
