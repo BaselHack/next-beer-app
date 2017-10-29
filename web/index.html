@@ -3,44 +3,71 @@
 
 <head>
       <meta charset='UTF-8'>
-      <title>NBA - Liquid Analytics</title>
-      <!-- analytics -->
-      <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
-
+      <title>NBA - Analytics</title>
+      <!-- Google fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
       <!-- load styles -->
       <link rel='stylesheet' type='text/css' href='reset.css'>
       <link rel='stylesheet' type='text/css' href='style.css'>
-
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <!-- load scripts -->
       <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js'></script>
-      <script src='script.js'></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src='script.js'></script>
 
 </head>
 
 <body>
-      <div class='header'>
-         <div class="logo">
-            Next Beer Analytics
-         </div>
+      <div class="overlay_bg" id="login_container">
+            <div class="overlay_container">
+                  <div class="overlay_close noselect">
+                        <img class="overlay_close_img" alt="close_icon" draggable="false" src="https://minzel.io/svg/close_icon.svg">
+                  </div>
+                  <div class="overlay_inner">
+                        <div class="overlay_titel">User Login</div>
+                        <div class="overlay_description">Enter your login information to get access.</div>
+                        <div class="overlay_input">
+                              <input id="input_name" type="text" placeholder="Your username">
+                        </div>
+                        <div class="overlay_input">
+                              <input id="input_password" type="text" placeholder="your password">
+                        </div>
+                        <div class="overlay_content noselect">
+                              <div id="return">Return</div>
+                              <div id="login">Login</div>
+                        </div>
+                  </div>
+            </div>
+      </div>
 
-         <div class="brief">
-            <span></span>
-            <span></span>
-         </div>
+      <div class='header'>
+            <div class="logo">
+                  Next Beer Analytics
+            </div>
+
+            <div class="brief">
+                  <div class="gfx_gen_volume">
+                        <div class="gfx_gen_volume_c_1" id="gfx_gen_volume_c_1"></div>
+                        <div class="gfx_gen_volume_c_2"></div>
+                  </div>
+                  <div class="brief-text">
+                        <span id="gen_volume"></span>/50000 ml volume
+                  </div>
+                  <span id="gen_number">2 </span> taps
+            </div>
       </div>
 
       <div class='container-fixed-width'>
+
             <div class='container-12-row'>
-                <article>
-                  <h1>Beer Analytics</h1>
-                  <p>Welcome to your workspace</p>
-                  <p></p>
-                </article>
+                  <article>
+                        <h1>Beer Analytics</h1>
+                        <p>Welcome to your workspace</p>
+                        <p></p>
+                  </article>
             </div>
+
             <div class='container-3-row'>
                   <canvas id='chart_bar_use' width='400' height='400'></canvas>
             </div>
@@ -58,91 +85,83 @@
             </div>
 
             <div class='container-12-row'>
-                  <h1>Beer Consumption History</h1>
                   <canvas id='chart_line' width='400' height='150'></canvas>
             </div>
 
             <div class='container-12-row'>
-              <h2>Consumption Kronenbourg</h2>
-              <canvas id='chart_bubble' width='400' height='150'></canvas>
+                  <canvas id='chart_bubble' width='400' height='150'></canvas>
             </div>
 
-            <div class='container-12-row'>
-              <h2>Consumption Fedschlösschen</h2>
-              <canvas id='chart_bubble_2' width='400' height='150'></canvas>
-            </div>
-
-              <div class="container-12-row">
-                <h3>THE Crew</h3>
-                <p><em>We love coding!</em></p>
-                <p>We have created a fictional beer analytics tool.</p>
-                <br>
-                <div class="row">
-                  <div class="col-sm-5">
-                    <p><strong>Biraveen</strong></p><br>
-                  </div>
-                  <div class="col-sm-5">
-                    <p><strong>Difan</strong></p><br>
-                  </div>
-                  <div class="col-sm-5">
-                    <p><strong>Björn</strong></p><br>
-                  </div>
-                  <div class="col-sm-5">
-                    <p><strong>Simon</strong></p><br>
-                  </div>
-                </div>
-              </div>
-        <div class="container-12-row">
-          <h3 class="text-center">Contact</h3>
-          <p class="text-center"><em>We love our beer!</em></p>
-          <div class="row test">
-            <div class="col-md-4">
-              <p>Fan? Drop a note.</p>
-              <p><span class="glyphicon glyphicon-map-marker"></span>Basel, Switzerland</p>
-              <p><span class="glyphicon glyphicon-phone"></span>Phone: +00 1515151515</p>
-              <p><span class="glyphicon glyphicon-envelope"></span>Email: mail@mail.com</p>
-            </div>
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-sm-6 form-group">
-                  <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
-                </div>
-                <div class="col-sm-6 form-group">
-                  <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
-                </div>
-              </div>
-              <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
-              <div class="row">
-                <div class="col-md-12 form-group">
-                  <button class="btn pull-right" type="submit">Send</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
             <div class="container-12-row">
-              <footer id="footer">
-              <div id="footer-inner">
-                <p>Adobe I/O Sensei Kegbot</p>
-                <p>&copy; Copyright <a href="https://kegbot.org">Adobe Kegbot</a>
-                <p onclick="alertTermsOfUsage()" style="color: blue">Terms of Usage</p>
-                <p onclick="alertPrivacyPolicy()" style="color: blue">Privacy Policy</p>
-                <div class="clr"></div>
-              </div>
-            </footer></div>
+                  <h3>THE Crew</h3>
+                  <p><em>We love coding!</em></p>
+                  <p>We have created a fictional beer analytics tool.</p>
+                  <br>
+                  <div class="row">
+                        <div class="col-sm-5">
+                              <p><strong>Biraveen</strong></p><br>
+                        </div>
+                        <div class="col-sm-5">
+                              <p><strong>Difan</strong></p><br>
+                        </div>
+                        <div class="col-sm-5">
+                              <p><strong>Björn</strong></p><br>
+                        </div>
+                        <div class="col-sm-5">
+                              <p><strong>Simon</strong></p><br>
+                        </div>
+                  </div>
+            </div>
+
+            <div class="container-12-row">
+                  <h3 class="text-center">Contact</h3>
+                  <p class="text-center"><em>We love our beer!</em></p>
+                  <div class="row test">
+                        <div class="col-md-4">
+                              <p>Fan? Drop a note.</p>
+                              <p><span class="glyphicon glyphicon-map-marker"></span>Basel, Switzerland</p>
+                              <p><span class="glyphicon glyphicon-phone"></span>Phone: +00 1515151515</p>
+                              <p><span class="glyphicon glyphicon-envelope"></span>Email: mail@mail.com</p>
+                        </div>
+                        <div class="col-md-8">
+                              <div class="row">
+                                    <div class="col-sm-6 form-group">
+                                          <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                                    </div>
+                              </div>
+                              <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
+                              <div class="row">
+                                    <div class="col-md-12 form-group">
+                                          <button class="btn pull-right" type="submit">Send</button>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+            <div class="container-12-row">
+                  <footer id="footer">
+                        <div id="footer-inner">
+                              <p>Adobe I/O Sensei Kegbot</p>
+                              <p>&copy; Copyright <a href="https://kegbot.org">Adobe Kegbot</a>
+                                    <p onclick="alertTermsOfUsage()" style="color: blue">Terms of Usage</p>
+                                    <p onclick="alertPrivacyPolicy()" style="color: blue">Privacy Policy</p>
+                                    <div class="clr"></div>
+                        </div>
+                  </footer>
+            </div>
+
       </div>
 </body>
 
-
-
 <script>
+      document.getElementById("login").addEventListener("click", function() {
+            document.getElementById("login_container").style.display = 'none';
+      });
 
-  function alertTermsOfUsage() {
-    alert("Here comes the terms of usage!");
-  }
-  function alertPrivacyPolicy() {
-    alert("Here comes the Privacy Policy!");
-  }
       // fetch json data from api
       // jQuery CORS example
       var test = [];
@@ -213,9 +232,25 @@
             render_chart_bar_quant(bewOne, bewTwo);
             render_chart_pie_quant_comparison(bewOne, bewTwo);
 
+            var volume = bewOne + bewTwo;
+            console.log(volume);
+            render_chart_gen_volume(volume);
+
             // rendering the chart bar for comparing uses between 2 products
             // render_chart_bar(beerOneCount, beerTwoCount);
       }
+
+      // ----------------------------------------------------------------------------------------------------
+
+      function render_chart_gen_volume(a) {
+            var volume_left = 50000 - a;
+            document.getElementById("gen_volume").innerHTML = volume_left;
+
+            document.getElementById("gfx_gen_volume_c_1").style.width = (volume_left / 500) + '%';
+
+      }
+
+      // ----------------------------------------------------------------------------------------------------
 
       // get time & quant of product
       function process_beverage_time() {
@@ -233,15 +268,15 @@
                   if (name !== userData[i].keg.beverage.name) {
                         nameTwo = userData[i].keg.beverage.name;
                         bewOne.push({
-                            x: userData[i].keg.start_time,
-                            y: userData[i].volume_ml
+                              x: userData[i].keg.start_time,
+                              y: userData[i].volume_ml
                         });
 
                   } else {
                         counter++;
                         bewTwo.push({
-                            x: userData[i].keg.start_time,
-                            y: userData[i].volume_ml
+                              x: userData[i].keg.start_time,
+                              y: userData[i].volume_ml
                         });
 
                   }
@@ -254,7 +289,6 @@
 
             render_chart_line_time_comparison(bewOne, bewTwo);
             render_chart_bubble_time_comparison(bewOne, bewTwo);
-            render_chart_bubble_2_time_comparison(bewOne, bewTwo);
 
             // render_chart_bar_quant(bewOne, bewTwo);
             // render_chart_pie_quant_comparison(bewOne, bewTwo);
@@ -408,7 +442,10 @@
             new Chart(document.getElementById('chart_line'), {
                   type: 'line',
                   data: {
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January',
+                              'February', 'March',
+                              'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July'
+                        ],
                         datasets: [{
                               label: 'Kronenbourg',
                               data: a,
@@ -437,49 +474,24 @@
       // ----------------------------------------------------------------------------------------------------
 
       function render_chart_bubble_time_comparison(a, b) {
-         new Chart(document.getElementById('chart_bubble'), {
-               type: 'bubble',
-               data: {
-                     datasets: [{
-                           label: 'Kronenbourg',
-                           data: a,
-                           backgroundColor: 'rgb(255, 99, 132)'
-                     }]
-               },
-               options: {
-                     scales: {
-                           xAxes: [{
-                                 type: 'time'
-                           }]
-                     }
-               }
-         });
+            new Chart(document.getElementById('chart_bubble'), {
+                  type: 'bubble',
+                  data: {
+                        datasets: [{
+                              label: 'Kronenbourg',
+                              data: a,
+                              backgroundColor: 'rgb(255, 99, 132)'
+                        }]
+                  },
+                  options: {
+                        scales: {
+                              xAxes: [{
+                                    type: 'time'
+                              }]
+                        }
+                  }
+            });
       };
-
-
-  // ----------------------------------------------------------------------------------------------------
-
-  function render_chart_bubble_2_time_comparison(a, b) {
-    new Chart(document.getElementById('chart_bubble_2'), {
-      type: 'bubble',
-      data: {
-        datasets: [{
-          label: 'Feldschlösschen',
-          data: b,
-          backgroundColor: 'rgb(255, 99, 132)'
-        }]
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            type: 'time'
-          }]
-        }
-      }
-    });
-  };
 </script>
-
-
 
 </html>
