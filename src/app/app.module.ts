@@ -8,11 +8,13 @@ import {MyApp} from './app.component';
 import {HomePage} from '../pages/home/home';
 import {HttpProvider} from '../providers/http/http';
 import {HttpModule} from "@angular/http";
+import {LoginPage} from "../pages/login/login";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -22,7 +24,8 @@ import {HttpModule} from "@angular/http";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   providers: [
     StatusBar,
@@ -31,8 +34,7 @@ import {HttpModule} from "@angular/http";
     HttpProvider
   ]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 export var config = {
   user_url_base: 'http://ec2-34-251-116-35.eu-west-1.compute.amazonaws.com/api/users/',

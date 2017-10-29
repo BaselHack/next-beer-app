@@ -12,13 +12,14 @@ export class HomePage {
   @ViewChild('beerHistory') beerHistory;
   @ViewChild('barCanvas') barCanvas;
 
-
+  username: string = config.user_name;
   beerHistoryChart: any;
   barChart: any;
   userData: any;
 
 
   constructor(public http: HttpProvider) {
+    this.username = config.user_name;
     this.getUserData()
       .then((response) => {
         this.fillData()
@@ -29,8 +30,8 @@ export class HomePage {
   private getUserData() {
     return new Promise((resolve) => {
       // TODO remove for prod
-      // var url = config.user_url_base + config.user_name + config.user_url_ending + '?api_key=' + config.api_key;
-      var url = './assets/data/data.json';
+      var url = 'http://kegbot-basel-460041187.eu-west-1.elb.amazonaws.com/api/v1/web/guest/default/get-drinks.http';
+      // var url = './assets/data/data.json';
       this.http.get(url)
         .then((response) => {
           console.log(response);
@@ -87,7 +88,6 @@ export class HomePage {
       data: {
         labels: [nameOne, nameTwo],
         datasets: [{
-          label: '# of Drinks',
           data: [drinkOneCount, drinkTwoCount],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
