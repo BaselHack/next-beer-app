@@ -176,6 +176,8 @@
             process_beverage_time();
       })
 
+      setTimeout(function() { location.reload(); }, 300000);
+
       // get use of products
       function process_beverage_uses() {
             var userData = window.source_data.objects;
